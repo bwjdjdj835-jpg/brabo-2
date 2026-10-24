@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>J.A.R.V.I.S. v6</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+</head><body>
+<header class="topo">
+  <canvas id="mini" class="logoBola"></canvas>
+  <div class="logo">J.A.R.V.I.S.<small>AI ASSISTANT SYSTEM</small></div>
+  <div class="direita"><span class="dot"></span> Jarvis Active <span id="relogio"></span></div>
+</header>
+<aside class="esq">
+  <div class="card"><h4>J.A.R.V.I.S. INTERFACE</h4>
+    <nav class="menu"><a class="on">⌂ HOME</a><a>◎ AI ASSISTANT</a><a>☑ TASKS</a><a>⟳ AUTOMATION</a><a>▶ MEDIA</a><a>⛨ SECURITY</a><a>⚙ SYSTEM</a><a>☰ SETTINGS</a></nav></div>
+  <div class="card"><h4>SYSTEM STATUS</h4>
+    <div class="st"><span>CPU</span><i><b id="bCpu"></b></i><em id="vCpu">--</em></div>
+    <div class="st"><span>RAM</span><i><b id="bRam"></b></i><em id="vRam">--</em></div>
+    <div class="st"><span>GPU</span><i><b id="bGpu"></b></i><em id="vGpu">--</em></div>
+    <div class="st"><span>NETWORK</span><i><b id="bNet"></b></i><em id="vNet">--</em></div></div>
+  <div class="card log"><h4>LOG DE AÇÕES</h4><div id="log"></div></div>
+</aside>
+<main>
+  <nav class="abas"><button class="on">〰 VOICE</button><button>✓ TASKS</button><button>⌬ NETWORK</button><button>⚙ SYSTEM</button></nav>
+  <nav class="modos">
+    <span>VISUAL:</span>
+    <button data-modo="esfera">◉ ESFERA</button><button data-modo="tela">▣ TELA GRANDE</button><button data-modo="notebook" class="ativo">⌨ NOTEBOOK</button>
+  </nav>
+  <div class="palco">
+    <canvas id="esfera3d"></canvas>
+    <div id="vistaTela" class="vista"><div class="moldura"><img id="espelho" alt=""><div id="semTela" class="sem">Aguardando a tela do notebook...</div></div></div>
+    <canvas id="notebook3d" class="vista"></canvas>
+  </div>
+  <div class="acaoModo"><span>AGIR POR:</span>
+    <button data-agir="tela">▣ Tela grande</button><button data-agir="notebook" class="on">⌨ Notebook 3D</button><button data-agir="direto">🖥 Direto no PC</button></div>
+  <form id="form"><button type="button" id="mic" title="Falar">🎤</button><input id="entrada" autocomplete="off" placeholder="Fale ou digite para o Jarvis..."><button>ENVIAR</button></form>
+  <div class="rodape">
+    <div class="card"><b>👤 VOICE PROFILE</b><small>Ativo: Bruno</small></div>
+    <div class="card"><b>⛨ SECURITY STATUS</b><small id="segTxt">Controle desligado · seguro</small></div>
+    <div class="card"><b>🧠 AI MODEL</b><small id="modelo">J.A.R.V.I.S. v6</small></div>
+  </div>
+</main>
+<aside class="dir">
+  <button id="parar" class="parar">■ PARAR<small>Esc×3 · Ctrl+Alt+Q</small></button>
+  <button id="togControle" class="tog off"><span class="b"></span><span id="togTxt">CONTROLE: DESLIGADO</span></button>
+  <div class="card"><h4>● AI ASSISTANT <em class="on">ONLINE</em></h4>
+    <div class="ouvindo"><canvas id="ondas"></canvas><div id="pensa">Como posso ajudar?</div></div>
+    <div class="barra"><i id="barra"></i></div>
+    <div id="chat"></div></div>
+  <div class="card"><h4>QUICK ACTIONS</h4>
+    <button class="qa" data-q="abrir o bloco de notas">Open Application ›</button>
+    <button class="qa" data-q="status do sistema">System Overview ›</button>
+    <button class="qa" data-q="diagnóstico do sistema">Run Diagnostics ›</button></div>
+  <div class="card"><h4>SYSTEM INFORMATION</h4>
+    <div class="info"><span>Device</span><b id="iDev">--</b><span>OS</span><b id="iOs">--</b><span>Uptime</span><b id="iUp">--</b></div>
+    <div class="bat"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="16" class="t"/><circle id="anel" cx="21" cy="21" r="16" class="v"/></svg><div><b id="iBat">--</b><small>Battery</small></div></div></div>
+  <label class="op"><input type="checkbox" id="motor" checked> Motor do agente</label>
+  <label class="op"><input type="checkbox" id="tts" checked> Voz (TTS)</label>
+</aside>
+<script type="module" src="app.js"></script>
+</body></html>

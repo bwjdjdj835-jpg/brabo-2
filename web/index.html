@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><title>J.A.R.V.I.S. — Ryker controla o seu PC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="cena"></canvas>
+<div class="hud">
+  <div class="mira"><i></i><i></i><i></i><i></i></div>
+  <header>
+    <div class="live"><span class="dot"></span>LIVE</div>
+    <div class="caminfo">CAM · <span id="vistaNome">LIVE · câmera 5D no tripé</span> · tela espelhada ao vivo</div>
+    <div class="logo">J.A.R.V.I.S.<small>Quarto do BRAGA · Ryker</small></div>
+    <div class="rel" id="relogio">--:--:--</div>
+  </header>
+  <div id="trabalho" class="trabalho" style="display:none"></div>
+  <section class="controlepc">
+    <button id="togControle" class="tog-grande off"><span class="bolinha"></span><span id="togTxt">CONTROLE DO PC: DESLIGADO</span></button>
+    <button id="parar" class="parar">■ PARAR (Esc×3 · Ctrl+Alt+Q)</button>
+    <div class="dica">Clique na tela do notebook 3D = clique no seu PC (só com o controle LIGADO). Duplo clique e botão direito também.</div>
+  </section>
+  <aside class="painel log"><h3>LOG DE AÇÕES</h3><div id="log"></div></aside>
+  <aside class="painel dir">
+    <h3>CONVERSA</h3>
+    <div id="chat"></div>
+    <form id="form"><input id="entrada" autocomplete="off" placeholder="Mande uma mensagem pro Jarvis..."><button>ENVIAR</button></form>
+    <label class="tog"><input type="checkbox" id="motor" checked> Motor do agente (ferramentas: web, comércios, sites, Blender, Godot, PC)</label>
+    <label class="tog"><input type="checkbox" id="tts" checked> Voz real (TTS pt-BR do navegador)</label>
+  </aside>
+  <nav class="vistas">
+    <button data-v="live5d" class="on">● LIVE câmera 5D</button>
+    <button data-v="medio">1. Medium shot</button>
+    <button data-v="close">2. Close-up na tela</button>
+    <button data-v="ombro">3. Over-the-shoulder</button>
+    <button data-v="tela">Tela de frente</button>
+    <button data-v="live">● LIVE webcam</button>
+    <button data-v="orbita">360° órbita</button>
+    <button data-v="quarto">Quarto</button>
+    <button data-v="rosto">Rosto</button>
+  </nav>
+  <footer><div id="onda"></div><span id="legenda">Ex.: “clica no meio da tela”, “digita olá mundo”, “aperta ctrl+c”, “abre youtube.com”, “rola pra baixo”</span><b id="estado">EM ESPERA</b></footer>
+</div>
+<script type="module" src="main.js"></script>
+</body></html>

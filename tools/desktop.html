@@ -1,0 +1,8 @@
+<html><body style="margin:0;background:linear-gradient(135deg,#0a3d91,#1b6fd6);font-family:sans-serif;color:#fff;height:100vh">
+<div style="padding:30px;font-size:48px;font-weight:800">Área de trabalho de teste (Xvfb :7)</div>
+<div style="display:flex;gap:40px;padding:30px">
+<button id="b1" onclick="c(this)" style="font-size:44px;padding:40px 60px;background:#1db954;color:#fff;border:0;border-radius:24px">📁 Arquivos</button>
+<button id="b2" onclick="c(this)" style="font-size:44px;padding:40px 60px;background:#e50914;color:#fff;border:0;border-radius:24px">▶ YouTube</button>
+<button id="b3" onclick="c(this)" style="font-size:44px;padding:40px 60px;background:#f5a623;color:#000;border:0;border-radius:24px">⚙ Config</button></div>
+<div id="cont" style="font-size:72px;font-weight:900;padding:30px">Cliques: 0</div><div id="ult" style="font-size:40px;padding:0 30px">último: nenhum</div>
+<script>let n=0;function c(b){n++;cont.textContent='Cliques: '+n;ult.textContent='último: '+b.textContent;b.style.outline='12px solid yellow'}</script></body></html>

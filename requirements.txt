@@ -1,0 +1,9 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+mss>=9
+Pillow>=10
+pyautogui>=0.9.54
+pyperclip>=1.8
+pynput>=1.7; sys_platform == "win32" or sys_platform == "darwin"
+psutil
+pygetwindow; sys_platform == 'win32'

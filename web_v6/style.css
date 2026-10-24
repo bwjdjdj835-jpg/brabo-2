@@ -1,0 +1,45 @@
+*{box-sizing:border-box}
+body{margin:0;height:100vh;display:grid;grid-template-columns:250px 1fr 300px;grid-template-rows:64px 1fr;gap:10px;padding:0 10px 10px;background:radial-gradient(circle at 50% 55%,#0a1d3d,#02060f 70%);color:#cfe8ff;font-family:Segoe UI,system-ui,sans-serif;overflow:hidden}
+.topo{grid-column:1/4;display:flex;align-items:center;justify-content:center;gap:14px;position:relative}
+.logoBola{width:56px;height:56px}
+.logo{font-size:30px;font-weight:300;letter-spacing:8px;color:#e8f4ff;text-shadow:0 0 14px #1e90ff;text-align:center}.logo small{display:block;font-size:12px;letter-spacing:4px;color:#7fb8ff}
+.topo .direita{position:absolute;right:10px;font-size:13px;color:#7fffd4}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#2f8;box-shadow:0 0 8px #2f8}
+aside{display:flex;flex-direction:column;gap:10px;min-height:0}
+.card{background:#06101fcc;border:1px solid #16345c;border-radius:12px;padding:12px}
+h4{margin:0 0 8px;color:#bcd8ff;font-size:12px;letter-spacing:2px;font-weight:600}h4 em{float:right;font-style:normal;color:#7fb8ff}
+.menu a{display:block;padding:9px 12px;margin-bottom:5px;border:1px solid #16345c;border-radius:8px;font-size:13px;letter-spacing:1px;cursor:pointer}
+.menu a.on,.menu a:hover{background:#0d2a52;border-color:#1e90ff;color:#fff}
+.st{display:grid;grid-template-columns:70px 1fr 64px;align-items:center;gap:6px;font-size:12px;margin:8px 0}
+.st i{height:5px;background:#0b1d36;border-radius:3px;overflow:hidden}.st b{display:block;height:100%;width:0;background:#1e90ff;transition:width .6s}.st em{font-style:normal;text-align:right}
+.log{flex:1;overflow:auto;font-size:11px;color:#8ab}.log .erro{color:#f77}
+button{cursor:pointer;font-weight:600;border-radius:10px;border:1px solid #1e5aa0;background:#071a33;color:#cfe8ff;padding:9px 14px;font-size:14px}
+main{display:flex;flex-direction:column;gap:8px;min-width:0;min-height:0}
+.abas,.modos,.acaoModo{display:flex;gap:10px;justify-content:center;align-items:center}
+.abas button{min-width:130px;letter-spacing:1px}.abas button.on{border-color:#1e90ff;box-shadow:0 0 12px #1e90ff88}
+.modos span,.acaoModo span{font-size:12px;letter-spacing:2px;color:#7fb8ff}
+.modos button,.acaoModo button{font-size:17px;padding:12px 22px;min-width:170px}
+.modos button.ativo,.acaoModo button.on{background:#1e90ff;color:#fff;box-shadow:0 0 18px #1e90ff}
+.acaoModo button[data-agir=direto].on{background:#c76b00;box-shadow:0 0 18px #f90}
+.palco{position:relative;flex:1;min-height:0;border-radius:14px;overflow:hidden}
+.palco canvas,.vista{position:absolute;inset:0;width:100%;height:100%}
+.vista{display:none}.vista.on{display:block}
+.moldura{position:absolute;inset:6px;display:flex;align-items:center;justify-content:center}
+#espelho{max-width:100%;max-height:100%;border:2px solid #1e90ff;border-radius:6px;box-shadow:0 0 30px #1e90ff55;cursor:crosshair}
+.sem{position:absolute;color:#7ab;font-size:18px}
+form{display:flex;gap:8px}input{flex:1;padding:12px;border-radius:10px;border:1px solid #1e5aa0;background:#020c1c;color:#dff;font-size:15px}
+#mic{width:48px;border-radius:50%;font-size:20px}#mic.on{background:#c22}
+.rodape{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.rodape b{display:block;font-size:12px;letter-spacing:1px}.rodape small{color:#9bb}
+.parar{background:#b00!important;border:2px solid #f55!important;color:#fff!important;font-size:24px!important;padding:12px!important;box-shadow:0 0 20px #f00a}.parar small{display:block;font-size:11px;font-weight:400}
+.tog{font-size:15px;display:flex;align-items:center;gap:10px;justify-content:center}.tog .b{width:16px;height:16px;border-radius:50%;background:#555}
+.tog.on{background:#0a5d2a;border-color:#2f8}.tog.on .b{background:#2f8;box-shadow:0 0 10px #2f8}
+.dir>.card:nth-of-type(1){flex:1;display:flex;flex-direction:column;min-height:0}
+.ouvindo{display:flex;align-items:center;gap:8px}#ondas{width:110px;height:44px}#pensa{font-size:13px;flex:1}
+.barra{height:5px;background:#0b1d36;border-radius:3px;overflow:hidden;margin:6px 0}.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1e90ff,#7fffd4);transition:width .3s}
+#chat{flex:1;overflow:auto;font-size:13px;min-height:60px}#chat .u{color:#9fd;margin:5px 0}#chat .j{background:#0b1f3d;border-radius:8px;padding:6px;margin:5px 0;white-space:pre-wrap}
+.qa{display:block;width:100%;text-align:left;margin-bottom:5px;font-weight:400;font-size:13px}
+.info{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12px}.info b{text-align:right;font-weight:400}
+.bat{display:flex;align-items:center;gap:10px;margin-top:8px}.bat svg{width:62px;height:62px;transform:rotate(-90deg)}
+.bat circle{fill:none;stroke-width:4}.bat .t{stroke:#0b1d36}.bat .v{stroke:#1e90ff;stroke-dasharray:100.5;stroke-dashoffset:100.5;stroke-linecap:round;transition:stroke-dashoffset .6s}
+.bat b{font-size:20px;display:block}.bat small{color:#9bb}
+.op{font-size:12px}
