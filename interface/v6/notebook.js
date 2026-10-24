@@ -1,10 +1,12 @@
-// Notebook realista estilo ThinkPad preto; a tela recebe o espelho ao vivo
+// Notebook realista estilo ThinkPad preto; a tela recebe o espelho ao vivo do PC.
+// Leve para o vídeo Intel: a tela só é reenviada à placa quando chega um quadro novo (~9 por segundo, em 960x600),
+// e o cursor/cliques ficam numa camada transparente pequena, redesenhada só quando mudam.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-export function criarNotebook(canvas, telaCanvas, aoClicar) {
-  const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); r.toneMapping = THREE.ACESFilmicToneMapping;
-  const cena = new THREE.Scene(); 
+export function criarNotebook(canvas, aoClicar) {
+  const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); r.toneMapping = THREE.ACESFilmicToneMapping; r.setPixelRatio(1);
+  const cena = new THREE.Scene();
   cena.environment = new THREE.PMREMGenerator(r).fromScene(new RoomEnvironment(), .04).texture;
   const cam = new THREE.PerspectiveCamera(38, 1, .01, 50); cam.position.set(0, .22, .5);
   const ctl = new OrbitControls(cam, canvas); ctl.target.set(0, .08, -.03); ctl.enableDamping = true; ctl.minDistance = .3; ctl.maxDistance = 1.6;
@@ -30,15 +32,25 @@ export function criarNotebook(canvas, telaCanvas, aoClicar) {
   c.fillStyle = '#c0c0c0'; c.font = 'italic bold 28px sans-serif'; c.fillText('ThinkPad', kx(.13), kz(.1));
   const tampo = new THREE.Mesh(new THREE.PlaneGeometry(W - .004, D - .004), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(lbl), color: 0x8a8a8a, roughness: .7, envMapIntensity: .2 }));
   tampo.rotation.x = -Math.PI / 2; tampo.position.y = .0185; cena.add(tampo);
-  const geoT = new THREE.BoxGeometry(1, 1, 1), matT = new THREE.MeshStandardMaterial({ color: 0x0c0c0e, roughness: .8, transparent: true, opacity: .0 });
   const trackpoint = new THREE.Mesh(new THREE.CylinderGeometry(.0028, .0028, .006, 16), new THREE.MeshStandardMaterial({ color: 0xcc0000, roughness: .9 }));
   trackpoint.position.set(.0005, .021, -.085 + 3.5 * u); cena.add(trackpoint);
   // tampa + tela
   const tampa = new THREE.Group(); tampa.position.set(0, .018, -D / 2 + .004); tampa.rotation.x = -.22; cena.add(tampa);
   const H = .225; const casca = new THREE.Mesh(new THREE.BoxGeometry(W, H, .008), mat); casca.position.set(0, H / 2, -.004); tampa.add(casca);
-  const tex = new THREE.CanvasTexture(telaCanvas); tex.colorSpace = THREE.SRGBColorSpace;
-  const tela = new THREE.Mesh(new THREE.PlaneGeometry(W - .022, H - .03), new THREE.MeshBasicMaterial({ map: tex, toneMapped: false }));
+  // tela: um canvas de 960x600 que só é redesenhado (e reenviado à placa) quando chega um quadro novo do PC.
+  // (Mandar o ImageBitmap direto para a textura deixava a tela preta no vídeo Intel.)
+  const telaCv = document.createElement('canvas'); telaCv.width = 960; telaCv.height = 600; desenharAguardo(telaCv);
+  const telaCtx = telaCv.getContext('2d');
+  const texTela = new THREE.CanvasTexture(telaCv); texTela.colorSpace = THREE.SRGBColorSpace;
+  texTela.minFilter = THREE.LinearFilter; texTela.generateMipmaps = false;
+  const geoTela = new THREE.PlaneGeometry(W - .022, H - .03);
+  const tela = new THREE.Mesh(geoTela, new THREE.MeshBasicMaterial({ map: texTela, toneMapped: false }));
   tela.position.set(0, H / 2 + .004, .0002); tampa.add(tela);
+  // camada das marcas: cursor e ondas de clique, transparente, logo à frente da tela
+  const mc = document.createElement('canvas'); mc.width = 640; mc.height = 400; const m2 = mc.getContext('2d');
+  const texMarcas = new THREE.CanvasTexture(mc); texMarcas.colorSpace = THREE.SRGBColorSpace; texMarcas.minFilter = THREE.LinearFilter; texMarcas.generateMipmaps = false;
+  const marcas = new THREE.Mesh(geoTela, new THREE.MeshBasicMaterial({ map: texMarcas, transparent: true, depthWrite: false, toneMapped: false }));
+  marcas.position.set(0, H / 2 + .004, .0006); tampa.add(marcas);
   const cam2 = new THREE.Mesh(new THREE.CircleGeometry(.0018, 16), new THREE.MeshBasicMaterial({ color: 0x222233 })); cam2.position.set(0, H - .006, .0003); tampa.add(cam2);
   const anel = new THREE.Group(); [[.26,.006,1],[.3,.002,.5],[.34,.0015,.3]].forEach(([r,e,o]) => anel.add(new THREE.Mesh(new THREE.TorusGeometry(r,e,8,128), new THREE.MeshBasicMaterial({ color: 0x1e90ff, transparent: true, opacity: o, blending: THREE.AdditiveBlending }))));
   const brilho = new THREE.Mesh(new THREE.CircleGeometry(.26, 64), new THREE.MeshBasicMaterial({ color: 0x0b3a8a, transparent: true, opacity: .35 })); brilho.rotation.x = -Math.PI / 2; brilho.position.y = -.061;
@@ -53,7 +65,35 @@ export function criarNotebook(canvas, telaCanvas, aoClicar) {
   canvas.addEventListener('pointerup', e => { if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) < 4) { const p = uv(e); if (p) aoClicar({ tipo: down[2] === 2 ? 'direito' : 'clicar', u: p[0], v: p[1] }); } down = null; });
   canvas.addEventListener('dblclick', e => { const p = uv(e); if (p) aoClicar({ tipo: 'duplo', u: p[0], v: p[1] }); });
   canvas.addEventListener('contextmenu', e => e.preventDefault());
-  return { quadro() { const w = canvas.clientWidth, h = canvas.clientHeight; if (!w) return;
-    if (canvas.width !== w || canvas.height !== h) { r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
-    tex.needsUpdate = true; const t = performance.now() / 1000; corpo.position.y = Math.sin(t * 1.3) * .006; anel.rotation.z = t * .2; ctl.update(); r.render(cena, cam); } };
+
+  let cursor = null, cliques = [], marcaAntes = '';
+  function desenharMarcas() {
+    const agora = performance.now(); cliques = cliques.filter(k => agora - k.t < 700);
+    const marca = (cursor ? cursor.map(v => v.toFixed(3)).join() : '') + '|' + cliques.length;
+    if (marca === marcaAntes && !cliques.length) return;
+    marcaAntes = marca; m2.clearRect(0, 0, 640, 400);
+    for (const k of cliques) { const p = (agora - k.t) / 700; m2.strokeStyle = `rgba(255,50,50,${1 - p})`; m2.lineWidth = 4; m2.beginPath(); m2.arc(k.u * 640, k.v * 400, 8 + p * 30, 0, 7); m2.stroke(); }
+    if (cursor) { m2.strokeStyle = '#f33'; m2.lineWidth = 3; m2.beginPath(); m2.arc(cursor[0] * 640, cursor[1] * 400, 7, 0, 7); m2.stroke(); }
+    texMarcas.needsUpdate = true;
+  }
+  return {
+    frame(bmp) {   // um quadro novo da tela do PC (já reduzido para 960x600 ao abrir o JPEG)
+      telaCtx.drawImage(bmp, 0, 0, 960, 600); bmp.close();
+      texTela.needsUpdate = true;
+    },
+    cursor(c) { cursor = c; },
+    clique(u, v) { cliques.push({ u, v, t: performance.now() }); },
+    quadro() { const w = canvas.clientWidth, h = canvas.clientHeight; if (!w) return;
+      if (canvas.width !== w || canvas.height !== h) { r.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+      desenharMarcas();
+      const t = performance.now() / 1000; corpo.position.y = Math.sin(t * 1.3) * .006; anel.rotation.z = t * .2; ctl.update(); r.render(cena, cam); },
+    foto() { r.render(cena, cam); return canvas.toDataURL('image/jpeg', .8); },
+  };
+}
+
+function desenharAguardo(cv) {
+  const tc = cv.getContext('2d'), g = tc.createLinearGradient(0, 0, 960, 600);
+  g.addColorStop(0, '#0a2a5a'); g.addColorStop(1, '#020814'); tc.fillStyle = g; tc.fillRect(0, 0, 960, 600);
+  tc.fillStyle = '#5cc8ff'; tc.font = 'bold 40px sans-serif'; tc.textAlign = 'center'; tc.fillText('J.A.R.V.I.S.', 480, 270);
+  tc.font = '20px sans-serif'; tc.fillStyle = '#9cf'; tc.fillText('Aguardando a tela do notebook...', 480, 308);
 }

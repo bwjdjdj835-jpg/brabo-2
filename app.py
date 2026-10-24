@@ -1154,10 +1154,20 @@ class Jarvis:
         memoria_ram = psutil.virtual_memory()
         disco = psutil.disk_usage(DISCO)
         freq = psutil.cpu_freq()
+        # velocidade da rede desde a última consulta (a interface pergunta a cada 2 s)
+        rede, agora = psutil.net_io_counters(), time.time()
+        bytes_rede = rede.bytes_sent + rede.bytes_recv
+        antes = getattr(self, "_rede_antes", None)
+        mbps = (bytes_rede - antes[1]) * 8 / 1e6 / max(0.1, agora - antes[0]) if antes else 0.0
+        self._rede_antes = (agora, bytes_rede)
         return {
             "cpu": round(psutil.cpu_percent()),
             "ram": round(memoria_ram.percent),
             "disco": round(disco.percent),
+            "gpu": None,  # o Windows não informa o uso do vídeo Intel de um jeito leve
+            "rede_mbps": round(mbps, 2),
+            "os": f"{platform.system()} {platform.release()}",
+            "maquina": platform.node(),
             "bateria": round(bateria.percent) if bateria else None,
             "carregando": bool(bateria and bateria.power_plugged),
             "email": enviar_email.configurado(),
@@ -1555,7 +1565,7 @@ class Jarvis:
         """Toca o primeiro resultado do YouTube numa aba dentro do Jarvis (ou no navegador, se não der)."""
         import youtube
         try:
-            if not servidor.url_de(os.path.join(servidor.PASTA, "interface", "ryker", "index.html")):
+            if not servidor.url_de(os.path.join(servidor.PASTA, "interface", "v6", "index.html")):
                 raise RuntimeError("interface aberta sem o servidor local")
             id_video, titulo = youtube.buscar(busca)
         except Exception:
@@ -2307,12 +2317,12 @@ def main():
     jarvis._bot = telegram_bot.iniciar(jarvis.responder, jarvis.status)
     import notebook
     notebook.atalho_parar(lambda: jarvis._ui("parado", "Ctrl+Alt+Q"))  # freio pelo teclado, em qualquer janela
-    # a interface é o quarto 3D do Ryker, com a tela do PC no notebook dele
+    # a interface é a do Jarvis 2 (visual v6): esfera, tela grande e notebook 3D com a tela do PC
     try:
-        interface = servidor.iniciar() + "/interface/ryker/index.html"
+        interface = servidor.iniciar() + "/interface/v6/index.html"
     except Exception:
         log.exception("Servidor local falhou; abrindo a interface direto do arquivo (sem a tela ao vivo)")
-        interface = os.path.join(PASTA, "interface", "ryker", "index.html")
+        interface = os.path.join(PASTA, "interface", "v6", "index.html")
     janela = webview.create_window(
         identidade.SIGLA,
         interface,

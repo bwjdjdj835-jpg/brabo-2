@@ -46,14 +46,15 @@
     <div class="barra"><i id="barra"></i></div>
     <div id="chat"></div></div>
   <div class="card"><h4>QUICK ACTIONS</h4>
-    <button class="qa" data-q="abrir o bloco de notas">Open Application ›</button>
+    <button class="qa" data-q="abre o bloco de notas">Open Application ›</button>
     <button class="qa" data-q="status do sistema">System Overview ›</button>
     <button class="qa" data-q="diagnóstico do sistema">Run Diagnostics ›</button></div>
   <div class="card"><h4>SYSTEM INFORMATION</h4>
     <div class="info"><span>Device</span><b id="iDev">--</b><span>OS</span><b id="iOs">--</b><span>Uptime</span><b id="iUp">--</b></div>
     <div class="bat"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="16" class="t"/><circle id="anel" cx="21" cy="21" r="16" class="v"/></svg><div><b id="iBat">--</b><small>Battery</small></div></div></div>
-  <label class="op"><input type="checkbox" id="motor" checked> Motor do agente</label>
-  <label class="op"><input type="checkbox" id="tts" checked> Voz (TTS)</label>
+  <label class="op"><input type="checkbox" id="micLigado" checked> Microfone</label>
+  <label class="op"><input type="checkbox" id="tts" checked> Voz do Jarvis</label>
 </aside>
+<div id="aba" hidden><div class="aba-topo"><b id="aba-titulo"></b><button id="aba-fechar">✕ Fechar</button></div><iframe id="aba-frame" allow="autoplay; encrypted-media; fullscreen"></iframe></div>
 <script type="module" src="app.js"></script>
 </body></html>

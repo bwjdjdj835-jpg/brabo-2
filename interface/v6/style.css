@@ -43,3 +43,8 @@ form{display:flex;gap:8px}input{flex:1;padding:12px;border-radius:10px;border:1p
 .bat circle{fill:none;stroke-width:4}.bat .t{stroke:#0b1d36}.bat .v{stroke:#1e90ff;stroke-dasharray:100.5;stroke-dashoffset:100.5;stroke-linecap:round;transition:stroke-dashoffset .6s}
 .bat b{font-size:20px;display:block}.bat small{color:#9bb}
 .op{font-size:12px}
+
+/* Jarvis 2: vídeo do YouTube e projetos abertos por cima do palco */
+#aba{position:fixed;left:270px;right:320px;top:80px;bottom:20px;z-index:5;background:#02060f;border:2px solid #1e90ff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden}
+#aba[hidden]{display:none}.aba-topo{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#06101f}.aba-topo b{flex:1}
+#aba-frame{flex:1;border:0;background:#fff}
